@@ -5,6 +5,7 @@ import userStore
 import threading
 import csv
 import re
+from typing import cast
 
 
 app = Flask(__name__, template_folder='template')
@@ -46,6 +47,7 @@ def helloPost():
 @app.route('/carSharer', methods=['GET'])
 def carShare():
 
+    db2exists = 'nicht vorhanden :-(' # appease debugger 
     try:
         dbExists = connect.DBUtil().checkDatabaseExistsExternal()
         if dbExists:
@@ -71,9 +73,10 @@ def addUser():
         print(e)
         return "Failed!"
     finally:
-        userSt.close()
+        userSt.close() # type: ignore
 
 
-if __name__ == "__main__":
-    port = int("9" + re.match(r"([a-z]+)([0-9]+)", config["username"], re.I).groups()[1])
+if __name__ == "__main__": 
+    m: re.Match[str] = cast(re.Match[str], re.match(r"([a-z]+)([0-9]+)", config["username"], re.I))
+    port = int("9" + m.groups()[1])
     app.run(host='0.0.0.0', port=port, debug=True)

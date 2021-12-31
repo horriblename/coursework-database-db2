@@ -1,17 +1,19 @@
+from jaydebeapi import Connection
 import connect
+from typing import cast
 
 
 class UserStore:
 
     def __init__(self):
         #dbUtil = connect.DBUtil().getExternalConnection("testdb")
-        self.conn = connect.DBUtil().getExternalConnection("testdb")
-        self.conn.jconn.setAutoCommit(False)
+        self.conn = connect.DBUtil().getExternalConnection()
+        cast(Connection, self.conn).jconn.setAutoCommit(False) 
         self.complete = None
 
     # PREPARED STATEMENT (WITH PLACEHOLDERS)
     def addUser(self, userToAdd):
-        curs = self.conn.cursor()
+        curs = cast(Connection, self.conn).cursor()
         sqlExample = "INSERT INTO USER (firstname, lastname) VALUES(?, ?)"
         curs.execute(sqlExample, (userToAdd.getFirstName(), userToAdd.getLastName()))
 

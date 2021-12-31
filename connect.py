@@ -2,6 +2,7 @@ import jaydebeapi
 import os
 import csv
 import re
+from typing import cast, Union
 
 def csv_reader(path):
     with open(path, "r") as csvfile:
@@ -28,8 +29,8 @@ class DBUtil:
             import jpype
             if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
                 jpype.attachThreadToJVM()
-                jpype.java.lang.Thread.currentThread().setContextClassLoader(
-                    jpype.java.lang.ClassLoader.getSystemClassLoader())
+                jpype.java.lang.Thread.currentThread().setContextClassLoader( # type: ignore
+                    jpype.java.lang.ClassLoader.getSystemClassLoader()) # type: ignore
             conn = jaydebeapi.connect("com.ibm.db2.jcc.DB2Driver",
                                       "jdbc:db2:{database}".format(
                                           database=database
@@ -50,13 +51,13 @@ class DBUtil:
             import jpype
             if jpype.isJVMStarted() and not jpype.isThreadAttachedToJVM():
                 jpype.attachThreadToJVM()
-                jpype.java.lang.Thread.currentThread().setContextClassLoader(
-                    jpype.java.lang.ClassLoader.getSystemClassLoader())
+                jpype.java.lang.Thread.currentThread().setContextClassLoader( # type: ignore
+                    jpype.java.lang.ClassLoader.getSystemClassLoader()) # type: ignore
             conn = jaydebeapi.connect("com.ibm.db2.jcc.DB2Driver",
                                       "jdbc:db2://"
                                       "{rechnername}.is.inf.uni-due.de:50{gruppennummer}/{database}".format(
                                           rechnername=rechnername,
-                                          gruppennummer=re.match(r"([a-z]+)([0-9]+)", username, re.I).groups()[1],
+                                          gruppennummer=cast(re.Match[str], re.match(r"([a-z]+)([0-9]+)", username, re.I)).groups()[1],
                                           database=database
                                           #user=username.strip()
                                       ),
@@ -73,7 +74,7 @@ class DBUtil:
 
     def checkDatabaseExists(self):
         exists = False
-        conn = False
+        conn: Union[jaydebeapi.Connection, None]  = None 
 
         try:
             conn = self.getConnection()
@@ -82,6 +83,7 @@ class DBUtil:
         except Exception as e:
             print(e)
         finally:
+            conn = cast(jaydebeapi.Connection, conn)
             conn.close()
 
         return exists
@@ -97,6 +99,7 @@ class DBUtil:
         except Exception as e:
             print(e)
         finally:
-            conn.close()
+            if exists:
+                cast(jaydebeapi.Connection, conn).close()
 
         return exists
