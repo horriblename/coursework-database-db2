@@ -44,7 +44,7 @@ class DBUtil:
         except Exception as e:
             print(e)
 
-    def getExternalConnection(self):
+    def getExternalConnection(self) -> jaydebeapi.Connection:
 
         try:
             # Fix
@@ -68,11 +68,13 @@ class DBUtil:
                                       },
                                       os.path.join(os.getcwd(), 'jdbc-1.0.jar')
                                       )
-            return conn
+            return cast(jaydebeapi.Connection, conn)
         except Exception as e:
             print(e)
 
-    def checkDatabaseExists(self):
+        return jaydebeapi.Connection(None, None) # appease debugger, this will never be reached
+
+    def checkDatabaseExists(self) -> bool:
         exists = False
         conn: Union[jaydebeapi.Connection, None]  = None 
 
@@ -88,9 +90,9 @@ class DBUtil:
 
         return exists
 
-    def checkDatabaseExistsExternal(self):
+    def checkDatabaseExistsExternal(self) -> bool:
         exists = False
-        conn = False
+        conn = None
 
         try:
             conn = self.getExternalConnection()

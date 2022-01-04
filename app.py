@@ -43,11 +43,14 @@ def helloPost():
 
     return render_template('hello.html', users=userList)
 
+@app.route('/', methods=['GET'])
+def index():
+    return 'try <a href="/carSharer">carSharer</a> or <a href="/hello">hello</a>'
 
 @app.route('/carSharer', methods=['GET'])
 def carShare():
 
-    db2exists = 'nicht vorhanden :-(' # appease debugger 
+    db2exists = ''
     try:
         dbExists = connect.DBUtil().checkDatabaseExistsExternal()
         if dbExists:
@@ -79,4 +82,4 @@ def addUser():
 if __name__ == "__main__": 
     m: re.Match[str] = cast(re.Match[str], re.match(r"([a-z]+)([0-9]+)", config["username"], re.I))
     port = int("9" + m.groups()[1])
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='127.0.0.1', port=port, debug=True)
