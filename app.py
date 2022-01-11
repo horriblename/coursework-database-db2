@@ -1,11 +1,15 @@
+from datetime import datetime
 from flask import Flask, request, render_template
+from werkzeug.utils import redirect
+from drive import Drive
+import driveStore
 import user
 import connect
 import userStore
-import threading
+# import threading
 import csv
 import re
-from typing import cast
+from typing import Any, cast
 
 
 app = Flask(__name__, template_folder='template')
@@ -32,16 +36,48 @@ def helloGet():
     return render_template('hello.html', users=userList)
 
 
-@app.route('/hello', methods=['POST'])
-def helloPost():
-    firstname = request.form.get('firstname')
-    lastname = request.form.get('lastname')
+@app.route('/new_drive', methods=['GET'])
+def newDriveGet():
+    return render_template('new_drive.html')
 
-    if firstname is not None and lastname is not None and firstname and lastname:
-        with threading.Lock():
-            userList.append(user.User(firstname, lastname))
 
-    return render_template('hello.html', users=userList)
+@app.route('/new_drive', methods=['POST'])
+def newDrivePost():
+    requiredParams   = ('depart', 'destination', 'maxCap', 'cost', 'vehicleType', 'driveDateTime')
+    param:dict[str, Any] = {'driverBID': 1, 'status': 'offen'} # TODO driverBID
+
+    param['depart']         = request.form.get('depart', type=str)
+    param['destination']    = request.form.get('destination', type=str)
+    param['maxCap']         = request.form.get('maxcap', type=int)
+    param['cost']           = request.form.get('cost', type=float)
+    param['vehicleType']    = request.form.get('vehicletype', type=str)
+    datestr = request.form.get('drivedatetime', type=str) 
+    if datestr is None or datestr == '':  # I think it returns '' and not None
+        param['driveDateTime']  = None
+    else:    
+        param['driveDateTime']  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
+    param['description']    = str(request.form.get('description', type=str))
+
+    for r in requiredParams:
+        if param[r] == None:
+            print("Got an incomplete form: empty field ", r)
+            return render_template('new_drive.html')
+        
+    ds: driveStore.DriveStore
+    try:
+        ds = driveStore.DriveStore()
+        print("new Drive was passed the parameters ", param)
+        driveToAdd = Drive(**param)
+        ds.addDrive(driveToAdd)
+        ds.completion()
+    except Exception as e:
+        print(e)
+        return "Failed!"
+    finally:
+        ds.close() # type: ignore
+
+    # TODO query FID and redirect to view_drive
+    return redirect('/')
 
 @app.route('/', methods=['GET'])
 def index():
