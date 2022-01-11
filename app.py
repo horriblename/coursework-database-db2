@@ -32,7 +32,7 @@ def csv_reader(path):
 config = csv_reader("properties.settings")
 
 @app.route('/hello', methods=['GET'])
-def helloGet():
+def hello():
     return render_template('hello.html', users=userList)
 
 
@@ -81,9 +81,9 @@ def newDrivePost():
 
 @app.route('/', methods=['GET'])
 def index():
-    return 'try <a href="/carSharer">carSharer</a> or <a href="/hello">hello</a>'
+    return carShare()
 
-@app.route('/carSharer', methods=['GET'])
+@app.route('/view_main', methods=['GET'])
 def carShare():
 
     db2exists = ''
@@ -96,7 +96,7 @@ def carShare():
     except Exception as e:
         print(e)
 
-    return render_template('carSharer.html', db2exists=db2exists)
+    return render_template('view_main.html', db2exists=db2exists)
 
 @app.route('/addUser', methods=['GET'])
 def addUser():
