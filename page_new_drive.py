@@ -6,20 +6,20 @@ import driveStore
 from typing import Any
 
 def newDrivePost():
-    requiredParams   = ('depart', 'destination', 'maxCap', 'cost', 'vehicleType', 'driveDateTime')
-    param:dict[str, Any] = {'driverBID': 1, 'status': 'offen'} # TODO driverBID
+    requiredParams = ('startort', 'zielort', 'maxPlaetze', 'fahrtkosten', 'transportmittel', 'fahrtdatumzeit')
+    param:dict[str, Any] = {'anbieter': 1, 'status': 'offen'} # TODO anbieter
 
-    param['depart']         = request.form.get('depart', type=str)
-    param['destination']    = request.form.get('destination', type=str)
-    param['maxCap']         = request.form.get('maxcap', type=int)
-    param['cost']           = request.form.get('cost', type=float)
-    param['vehicleType']    = request.form.get('vehicletype', type=str)
+    param['startort']       = request.form.get('depart', type=str)
+    param['zielort']        = request.form.get('destination', type=str)
+    param['maxPlaetze']     = request.form.get('maxcap', type=int)
+    param['fahrtkosten']    = request.form.get('cost', type=float)
+    param['transportmittel']= request.form.get('vehicletype', type=str)
     datestr = request.form.get('drivedatetime', type=str) 
     if datestr is None or datestr == '':  # I think it returns '' and not None
-        param['driveDateTime']  = None
+        param['fahrtdatumzeit']  = None
     else:    
-        param['driveDateTime']  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
-    param['description']    = str(request.form.get('description', type=str))
+        param['fahrtdatumzeit']  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
+    param['beschreibung'] = str(request.form.get('description', type=str))
 
     for r in requiredParams:
         if param[r] == None:

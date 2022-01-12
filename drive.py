@@ -3,61 +3,61 @@ from datetime import datetime
 class Drive:
     def __init__(
             self,
-            depart: str,
-            destination: str,
-            vehicleType: str,
-            maxCap:int,
-            cost: float,
-            driveDateTime: datetime,
-            description: str,
-            driverBID: int,
+            startort: str,
+            zielort: str,
+            transportmittel: str,
+            maxPlaetze:int,
+            fahrtkosten: float,
+            fahrtdatumzeit: datetime,
+            beschreibung: str,
+            anbieter: int,
             status: str,
     ):
-        self.depart: str            = depart
-        self.destination: str       = destination
-        self.vehicleType:str        = vehicleType
-        self.maxCap: int            = maxCap
-        self.cost: float            = cost
-        self.driveDate: datetime    = driveDateTime
-        self.description: str       = description
-        self.driverBID: int         = driverBID
-        self.status:    str         = status  # can be 'offen' or 'geschlossen'
-        assert 1 <= maxCap <= 10, f'Drive got "{maxCap}" for parameter maxCap (Expected value between 1 and 10)'
+        self.startort: str              = startort
+        self.zielort: str               = zielort
+        self.transportmittel:str        = transportmittel
+        self.maxPlaetze: int            = maxPlaetze
+        self.fahrtkosten: float         = fahrtkosten
+        self.fahrtdatumzeit: datetime   = fahrtdatumzeit
+        self.beschreibung: str          = beschreibung
+        self.anbieter: int              = anbieter
+        self.status:    str             = status  # can be 'offen' or 'geschlossen'
+        assert 1 <= maxPlaetze <= 10, f'Drive got "{maxPlaetze}" for parameter maxCap (Expected value between 1 and 10)'
         assert status == 'offen' or status == 'geschlossen', f'Drive got "{status}" for parameter status (Expected "offen" or "geschlossen")'
 
     def getDepart(self):
-        return self.depart
+        return self.startort
 
     def getDestination(self):
-        return self.destination
+        return self.zielort
 
     def getVehicleType(self):
-        return self.vehicleType
+        return self.transportmittel
 
     def getVehicleTypeId(self) -> int:
-        if self.vehicleType == 'Auto':  return 1
-        if self.vehicleType == 'Bus':   return 2
-        if self.vehicleType == 'Kleintransportmittel': return 3
+        if self.transportmittel == 'Auto':  return 1
+        if self.transportmittel == 'Bus':   return 2
+        if self.transportmittel == 'Kleintransportmittel': return 3
         # TODO throw error?
         return 0
 
     def getMaxCap(self):
-        return self.maxCap
+        return self.maxPlaetze
 
     def getCost(self) -> float:
-        return round(self.cost, 2)
+        return round(self.fahrtkosten, 2)
 
     def getDriveDateTime(self) -> datetime:
-        return self.driveDate
+        return self.fahrtdatumzeit
 
     def getDriveDateTimeStr(self) -> str:
         return datetime.strftime(self.getDriveDateTime(),  '%Y-%m-%d %H:%M:%S')
 
     def getDescription(self):
-        return self.description
+        return self.beschreibung
 
     def getDriverBID(self) -> int:
-        return self.driverBID
+        return self.anbieter
 
     def getStatus(self):
         return self.status
