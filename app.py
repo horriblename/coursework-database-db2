@@ -1,15 +1,13 @@
-from datetime import datetime
-from flask import Flask, request, render_template
-from werkzeug.utils import redirect
-from drive import Drive
-import driveStore
+from flask import Flask, render_template
 import user
 import connect
 import userStore
 # import threading
 import csv
 import re
-from typing import Any, cast
+from typing import  cast
+
+import page_new_drive as newDrive
 
 
 app = Flask(__name__, template_folder='template')
@@ -43,41 +41,7 @@ def newDriveGet():
 
 @app.route('/new_drive', methods=['POST'])
 def newDrivePost():
-    requiredParams   = ('depart', 'destination', 'maxCap', 'cost', 'vehicleType', 'driveDateTime')
-    param:dict[str, Any] = {'driverBID': 1, 'status': 'offen'} # TODO driverBID
-
-    param['depart']         = request.form.get('depart', type=str)
-    param['destination']    = request.form.get('destination', type=str)
-    param['maxCap']         = request.form.get('maxcap', type=int)
-    param['cost']           = request.form.get('cost', type=float)
-    param['vehicleType']    = request.form.get('vehicletype', type=str)
-    datestr = request.form.get('drivedatetime', type=str) 
-    if datestr is None or datestr == '':  # I think it returns '' and not None
-        param['driveDateTime']  = None
-    else:    
-        param['driveDateTime']  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
-    param['description']    = str(request.form.get('description', type=str))
-
-    for r in requiredParams:
-        if param[r] == None:
-            print("Got an incomplete form: empty field ", r)
-            return render_template('new_drive.html')
-        
-    ds: driveStore.DriveStore
-    try:
-        ds = driveStore.DriveStore()
-        print("new Drive was passed the parameters ", param)
-        driveToAdd = Drive(**param)
-        ds.addDrive(driveToAdd)
-        ds.completion()
-    except Exception as e:
-        print(e)
-        return "Failed!"
-    finally:
-        ds.close() # type: ignore
-
-    # TODO query FID and redirect to view_drive
-    return redirect('/')
+    return newDrive.newDrivePost()
 
 @app.route('/', methods=['GET'])
 def index():
