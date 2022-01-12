@@ -5,10 +5,6 @@ from drive import Drive
 import driveStore
 from typing import Any
 
-def newDriveGet():
-    return render_template('new_drive.html')
-
-
 def newDrivePost():
     requiredParams   = ('depart', 'destination', 'maxCap', 'cost', 'vehicleType', 'driveDateTime')
     param:dict[str, Any] = {'driverBID': 1, 'status': 'offen'} # TODO driverBID
