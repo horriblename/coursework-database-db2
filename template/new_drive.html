@@ -12,22 +12,22 @@
 
       <div id="site">
   <form name="create-drive" action="new_drive" method="post">
-     Von: <input type="text" name="depart" value=""><br/>
-     Bis: <input type="text" name="destination" value=""><br/>
-     Maixmale Kapazität: <input type="number" name="maxcap" min="1" max="10" /> <br/>
+     Von: <input type="text" name="depart" required><br/>
+     Bis: <input type="text" name="destination" required><br/>
+     Maixmale Kapazität: <input type="number" name="maxcap" min="1" max="10" required> <br/>
      Fahrtkosten: <input type="number" name="cost" step="0.01" /> € <br/>
      Transportmittel:
-        <input type="radio" name="vehicletype" value="Auto">
+        <input type="radio" name="vehicletype" value="Auto" required>
         <label for="Auto">Auto</label>
         <input type="radio" name="vehicletype" value="Bus">
         <label for="Bus">Bus</label>
         <input type="radio" name="vehicletype" value="Kleintransporter">
         <label for="Kleintransporter">Kleintransporter</label>
       <br/>
-      Fahrtdatum: <input type="datetime-local" name="drivedatetime" value="">
+      Fahrtdatum: <input type="datetime-local" name="drivedatetime" value="" required>
       <br/>
       Beschreibung: <textarea name="description" placeholder=""></textarea> <br/>
-    <input type="submit" value="Save" />
+    <input type="submit" value="Save">
   </form>
 
    </div>
