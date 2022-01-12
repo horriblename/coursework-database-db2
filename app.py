@@ -5,7 +5,6 @@ import userStore
 # import threading
 import csv
 import re
-from typing import  cast
 
 import page_new_drive as newDrive
 
@@ -79,6 +78,5 @@ def addUser():
 
 
 if __name__ == "__main__": 
-    m: re.Match[str] = cast(re.Match[str], re.match(r"([a-z]+)([0-9]+)", config["username"], re.I))
-    port = int("9" + m.groups()[1])
+    port = int("9" + re.match(r"([a-z]+)([0-9]+)", config["username"], re.I).groups()[1]) # type: ignore
     app.run(host='127.0.0.1', port=port, debug=True)
