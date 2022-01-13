@@ -5,21 +5,21 @@ def viewDriveGet():
     '''
         The flask page to be served at /view_drive
     '''
-    fid = request.args.get('fid', int)
+    fid = request.args.get('fid', -1, int)
     print(fid)
-    if fid is None:
-        return "Please provide fid"
+    if fid == -1:
+        return render_template('view_drive_not_found.html', errmsg='Please provide fid')
     drive = None
     try: 
         ds = driveStore.DriveStore()
         drive = ds.fetchDriveByFID(fid) # type: ignore
     except Exception as e:
         print(e)
-        return "Could not fetch drive info."
+        return render_template('view_drive_not_found.html', errmsg='DB error!')
     finally:
         ds.close() #type:ignore
 
     if drive is None:
-        ... #TODO
+        return render_template('view_drive_not_found.html', errmsg='The drive you are looking for does not exist')
     
     return render_template('view_drive.html', drive=drive)
