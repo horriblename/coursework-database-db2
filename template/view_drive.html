@@ -1,0 +1,58 @@
+<!--
+   param anbieterEmail: query from db
+   param dateTime: date and time formatted in 'dd.MM.yyyy  hh:mm'
+   param from
+   param to
+   param freeSeats: calculate
+   param status
+   param description: dash '-' if None
+   param reviews:
+-->
+<!-- TODO: 
+- anbieter email
+- date time formatting
+
+- 
+-->
+<html>
+<head><title>CarSharer</title>
+   <link rel="stylesheet"  href="static/root.css" />
+</head>
+
+<body>
+	<div id="wrapper">
+		<div id="header">
+		<h1> CarSharer </h1>
+		</div>
+
+		<div id="site">
+         <h2>Information</h2>
+         <table class="table-subtle"> <tbody>
+               <tr><td>Offered by: </td><td>{{drive.anbieter}}</td></tr>
+               <tr><td>Departure date and time: </td><td>{{drive.getDriveDateTimeStr()}}</td></tr>
+               <tr><td>From: </td><td>{{drive.startort}}</td></tr>
+               <tr><td>To: </td><td>{{drive.zielort}}</td></tr>
+               <tr><td>Free seats: </td><td>{{freeSeats}}</td></tr>
+               <tr><td>Cost: </td><td>{{drive.fahrtkosten}} €</td></tr>
+               <tr><td>Status: </td><td>{{drive.status}}</td></tr>
+               <tr><td>Description: </td><td>{{drive.getDescription()}}</td></tr>
+         </tbody></table>
+
+         <hr>
+         <h3> Reservation</h3>
+         <form>
+         Seats to reserve: <input type="number" name="reservations">
+         <button type="submit">Place Reservations</button>
+
+         <!--delete drive: what does this do??-->
+         </form>
+
+         <hr>
+         <h3> Ratings</h3>
+         <!--list ratings-->
+
+         <a href="/new_rating" class="btn"><span>Rate this trip </span></button></a>
+		</div>
+	</div>
+</body>
+</html>

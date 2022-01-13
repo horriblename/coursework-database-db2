@@ -7,6 +7,7 @@ import csv
 import re
 
 import page_new_drive as newDrive
+import page_view_drive as viewDrive
 
 
 app = Flask(__name__, template_folder='template')
@@ -40,6 +41,10 @@ def newDriveGet():
 @app.route('/new_drive', methods=['POST'])
 def newDrivePost():
     return newDrive.newDrivePost()
+
+@app.route('/view_drive', methods=['GET'])
+def viewDriveGet():
+    return viewDrive.viewDriveGet()
 
 @app.route('/', methods=['GET'])
 def index():

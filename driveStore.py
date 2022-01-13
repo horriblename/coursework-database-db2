@@ -29,6 +29,32 @@ class DriveStore:
         # curs.execute(r'SELECT FID FROM fahrt WHERE ')
         #print(curs.fetchall())
 
+    def fetchDriveByFID(self, fid: int) -> Drive | None:
+        curs = self.conn.cursor()
+        sql = f'SELECT \
+status, startort, zielort, fahrtdatumzeit, maxPlaetze, fahrtkosten, \
+anbieter, transportmittel, beschreibung FROM fahrt WHERE fid={fid}'
+        print(sql)
+        curs.execute(sql)
+        res = curs.fetchall()
+        if len(res) == 0:
+            return None
+        res = res[0]
+        print("got row ",res)
+        assert len(res) >= 9, f"while fetching from table FAHRT, Expected 9 columns but got {len(res)}"
+
+        param = dict()
+        param['status'] 	    = res[0]
+        param['startort'] 	    = res[1]
+        param['zielort'] 	    = res[2]
+        param['fahrtdatumzeit'] = datetime.strptime(res[3], '%Y-%m-%d %H:%M:%S')
+        param['maxPlaetze'] 	= res[4]
+        param['fahrtkosten'] 	= res[5]
+        param['anbieter'] 	    = res[6]
+        param['transportmittel']= res[7]
+        param['beschreibung'] 	= res[8]
+
+        return Drive(**param)
 
     def completion(self):
         self.complete = True
