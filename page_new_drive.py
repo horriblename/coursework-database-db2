@@ -6,6 +6,9 @@ import driveStore
 from typing import Any
 
 def newDrivePost():
+    '''
+        Handle POST request on '/new_drive'
+    '''
     requiredParams = ('startort', 'zielort', 'maxPlaetze', 'fahrtkosten', 'transportmittel', 'fahrtdatumzeit')
     param:dict[str, Any] = {'anbieter': 1, 'status': 'offen'} # TODO anbieter
 
@@ -21,12 +24,12 @@ def newDrivePost():
         param['fahrtdatumzeit']  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
     param['beschreibung'] = str(request.form.get('description', type=str))
 
+    # TODO input assertions: see pg.14 of the manual 
     for r in requiredParams:
-        if param[r] == None:
+        if param[r] is None:
             print("Got an incomplete form: empty field ", r)
             return render_template('new_drive.html')
         
-    ds: driveStore.DriveStore
     try:
         ds = driveStore.DriveStore()
         print("new Drive was passed the parameters ", param)

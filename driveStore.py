@@ -1,10 +1,13 @@
 import connect
+from datetime import datetime
 from drive import Drive
 
 class DriveStore:
+    '''
+        Provides utilities to interact with the FAHRT table
+    '''
 
     def __init__(self):
-        #dbUtil = connect.DBUtil().getExternalConnection("testdb")
         self.conn = connect.DBUtil().getExternalConnection()
         self.conn.jconn.setAutoCommit(False) 
         self.complete = None
@@ -12,9 +15,9 @@ class DriveStore:
     def addDrive(self, driveToAdd:Drive):
         curs = self.conn.cursor()
         sql = "INSERT INTO fahrt \
-            (status, startort, zielort, fahrtdatumzeit, maxPlaetze, fahrtkosten,\
-            anbieter, transportmittel, beschreibung) VALUES\
-            (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+(status, startort, zielort, fahrtdatumzeit, maxPlaetze, fahrtkosten, \
+anbieter, transportmittel, beschreibung) VALUES \
+(?, ?, ?, ?, ?, ?, ?, ?, ?)"
         curs.execute(sql, (
             driveToAdd.getStatus(),
             driveToAdd.getDepart(),

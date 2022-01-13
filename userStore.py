@@ -12,7 +12,7 @@ class UserStore:
     # PREPARED STATEMENT (WITH PLACEHOLDERS)
     def addUser(self, userToAdd):
         curs = self.conn.cursor()
-        sqlExample = "INSERT INTO USER (firstname, lastname) VALUES(?, ?)"
+        sqlExample = "INSERT INTO benutzer (name, email) VALUES(?, ?)"
         curs.execute(sqlExample, (userToAdd.getFirstName(), userToAdd.getLastName()))
 
     def completion(self):
