@@ -34,3 +34,37 @@ body{
 .centerBlock{
 	margin:0 auto;
 }
+
+hr{
+   margin: 10px 0px;
+}
+
+link{
+   color: FAFAFA;
+   text-decoration: none;
+}
+
+.btn {
+   background-color: #2c5b9c;
+   padding: 4px 8px;
+   margin: 4px 4px;
+   color: white;
+
+   text-decoration: none;
+}
+
+.table-subtle {
+   margin: 10px;
+}
+
+.table-subtle tr{
+   padding: 4px;
+}
+
+.table-subtle td{
+   padding: 4px 8px;
+}
+
+.table-subtle td:first-child{
+   text-align: right;
+}
