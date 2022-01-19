@@ -32,11 +32,22 @@ anbieter, transportmittel, beschreibung) VALUES \
         # curs.execute(r'SELECT FID FROM fahrt WHERE ')
         #print(curs.fetchall())
 
-    def fetchDriveByFID(self, fid: int) -> Drive | None:
+        # TODO move to some other place, SELECT queries don't need all this prep work like INSERTs do
+    def fetchDriveInfo(self, fid: int) -> tuple[Drive, str, int] | None:
         curs = self.conn.cursor()
-        sql = f'SELECT \
-status, startort, zielort, fahrtdatumzeit, maxPlaetze, fahrtkosten, \
-anbieter, transportmittel, beschreibung FROM fahrt WHERE fid={fid}'
+        sql = f'''
+SELECT f.status, f.startort, f.zielort, f.fahrtdatumzeit, f.maxPlaetze, f.fahrtkosten, f.anbieter, f.transportmittel, f.beschreibung, b.email, r.reserviert
+FROM fahrt f 
+    LEFT JOIN benutzer b 
+        ON b.bid=f.anbieter
+    LEFT JOIN (
+        SELECT r.fahrt, SUM(r.anzPlaetze) AS reserviert
+        FROM reservieren r
+        WHERE r.fahrt={fid}
+        GROUP BY r.fahrt
+    ) r ON r.fahrt=f.fid
+WHERE f.fid={fid} 
+'''
         print(sql)
         curs.execute(sql)
         res = curs.fetchall()
@@ -44,7 +55,6 @@ anbieter, transportmittel, beschreibung FROM fahrt WHERE fid={fid}'
             return None
         res = res[0]
         print("got row ",res)
-        assert len(res) >= 9, f"while fetching from table FAHRT, Expected 9 columns but got {len(res)}"
 
         param = dict()
         param['status'] 	    = res[0]
@@ -57,7 +67,7 @@ anbieter, transportmittel, beschreibung FROM fahrt WHERE fid={fid}'
         param['transportmittel']= res[7]
         param['beschreibung'] 	= res[8]
 
-        return Drive(**param)
+        return Drive(**param), res[9], int(res[10])
 
     def completion(self):
         self.complete = True

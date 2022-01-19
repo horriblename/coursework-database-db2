@@ -1,5 +1,6 @@
 from flask import request, render_template
 import driveStore
+import db_query_util
 
 def viewDriveGet():
     '''
@@ -12,7 +13,7 @@ def viewDriveGet():
     drive = None
     try: 
         ds = driveStore.DriveStore()
-        drive = ds.fetchDriveByFID(fid) # type: ignore
+        drive, driverEmail, takenSeats = ds.fetchDriveInfo(fid) # type: ignore
     except Exception as e:
         print(e)
         return render_template('view_drive_not_found.html', errmsg='DB error!')
