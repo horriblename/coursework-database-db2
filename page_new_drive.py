@@ -17,12 +17,12 @@ def newDrivePost():
     param['maxPlaetze']     = request.form.get('maxcap', type=int)
     param['fahrtkosten']    = request.form.get('cost', type=float)
     param['transportmittel']= request.form.get('vehicletype', type=str)
-    datestr = request.form.get('drivedatetime', type=str) 
-    if datestr is None or datestr == '':  # I think it returns '' and not None
+    datestr = request.form.get('drivedatetime', '', type=str) 
+    if datestr == '':
         param['fahrtdatumzeit']  = None
     else:    
         param['fahrtdatumzeit']  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
-    param['beschreibung'] = str(request.form.get('description', type=str))
+    param['beschreibung'] = request.form.get('description', '', type=str)
 
     # TODO input assertions: see pg.14 of the manual 
     for r in requiredParams:
