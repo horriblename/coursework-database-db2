@@ -1,11 +1,11 @@
 from flask import Flask, render_template
 import user
-import connect
 import userStore
 # import threading
 import csv
 import re
 
+import page_view_main as viewMain
 import page_new_drive as newDrive
 import page_view_drive as viewDrive
 
@@ -48,22 +48,11 @@ def viewDriveGet():
 
 @app.route('/', methods=['GET'])
 def index():
-    return carShare()
+    return carSharer()
 
 @app.route('/view_main', methods=['GET'])
-def carShare():
-
-    db2exists = ''
-    try:
-        dbExists = connect.DBUtil().checkDatabaseExistsExternal()
-        if dbExists:
-            db2exists = 'vorhanden! Supi!'
-        else:
-            db2exists = 'nicht vorhanden :-('
-    except Exception as e:
-        print(e)
-
-    return render_template('view_main.html', db2exists=db2exists)
+def carSharer():
+    return viewMain.carSharer()
 
 @app.route('/addUser', methods=['GET'])
 def addUser():
