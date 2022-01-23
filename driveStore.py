@@ -34,8 +34,12 @@ anbieter, transportmittel, beschreibung) VALUES \
 
         # TODO move to some other place, SELECT queries don't need all this prep work like INSERTs do
     def fetchDriveInfo(self, fid: int) -> tuple[Drive, str, int] | None:
+        '''
+            Query database for drive info
+            return (Drive, driver_email, reserved_seats)
+        '''
         curs = self.conn.cursor()
-        sql = f'''
+        sql = '''
 SELECT f.status, f.startort, f.zielort, f.fahrtdatumzeit, f.maxPlaetze, f.fahrtkosten, f.anbieter, f.transportmittel, f.beschreibung, b.email, r.reserviert
 FROM fahrt f 
     LEFT JOIN benutzer b 
@@ -43,31 +47,33 @@ FROM fahrt f
     LEFT JOIN (
         SELECT r.fahrt, SUM(r.anzPlaetze) AS reserviert
         FROM reservieren r
-        WHERE r.fahrt={fid}
+        WHERE r.fahrt=?
         GROUP BY r.fahrt
     ) r ON r.fahrt=f.fid
-WHERE f.fid={fid} 
+WHERE f.fid=?
 '''
         print(sql)
-        curs.execute(sql)
+        curs.execute(sql, (fid, fid))
         res = curs.fetchall()
         if len(res) == 0:
             return None
         res = res[0]
         print("got row ",res)
 
-        param = dict()
-        param['status'] 	    = res[0]
-        param['startort'] 	    = res[1]
-        param['zielort'] 	    = res[2]
-        param['fahrtdatumzeit'] = datetime.strptime(res[3], '%Y-%m-%d %H:%M:%S')
-        param['maxPlaetze'] 	= res[4]
-        param['fahrtkosten'] 	= res[5]
-        param['anbieter'] 	    = res[6]
-        param['transportmittel']= res[7]
-        param['beschreibung'] 	= res[8]
+        drive = Drive(
+            status 	        = res[0],
+            startort 	    = res[1],
+            zielort 	    = res[2],
+            fahrtdatumzeit  = datetime.strptime(res[3], '%Y-%m-%d %H:%M:%S'),
+            maxPlaetze 	    = res[4],
+            fahrtkosten 	= res[5],
+            anbieter 	    = res[6],
+            transportmittel = res[7],
+            beschreibung 	= res[8]
+        )
+        freeSeats = res[10] if res[10] != None else 0
 
-        return Drive(**param), res[9], int(res[10])
+        return drive, res[9], freeSeats
 
     def completion(self):
         self.complete = True
