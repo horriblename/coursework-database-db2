@@ -1,0 +1,32 @@
+<head>
+    <title>Search</title>
+   <link rel="stylesheet"  href="static/root.css" />
+</head>
+<body>
+    <div id="wrapper">
+		<div id="header">
+		<h1> CarSharer Website - Search Drives </h1>
+		</div>
+
+      <div id="site">
+  <form name="search-drive" action="" method="GET">
+     Start: <input type="text" name="value1" required>
+     Destination: <input type="text" name="value2" required><br/>
+      From: <input type="date" name="value3" required>
+    <input type="submit" value="Search">
+  </form>
+  <br/>
+  <h2>Search Results</h2><br/>
+          {%for i in range(0, totalfahrt)%}
+			<p>
+			Type : {{ fahrtType[i] }} <br>
+			From: {{ fahrtStart[i] }} <br>
+			To: {{ fahrtEnd[i] }} <br>
+			Status: {{ fahrtCost[i] }} <br>
+			</p>
+			<br>
+          {% endfor %}
+   </div>
+   </div>
+</body>
+</html>
