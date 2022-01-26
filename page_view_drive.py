@@ -1,6 +1,8 @@
 from flask import request, render_template
-import driveStore
+from datetime import datetime
+from drive import Drive
 import db_query_util
+import connect
 
 def viewDriveGet():
     '''
@@ -10,15 +12,7 @@ def viewDriveGet():
     print(fid)
     if fid == -1:
         return render_template('error.html', errmsg='Please provide fid')
-    drive = None
-    try: 
-        ds = driveStore.DriveStore()
-        drive, driverEmail, takenSeats = ds.fetchDriveInfo(fid) # type: ignore
-    except Exception as e:
-        print(e)
-        return render_template('error.html', errmsg='DB error!')
-    finally:
-        ds.close() #type:ignore
+    drive, driverEmail, takenSeats = fetchDriveInfo(fid) # type: ignore
 
     if drive is None:
         return render_template('error.html', errmsg='The drive you are looking for does not exist')
@@ -41,6 +35,50 @@ def viewDriveGet():
         ratings=ratings,
         ratingAvg=ratingAvg,
     )
+
+def fetchDriveInfo(fid: int) -> tuple[Drive | None, str, int]:
+    '''
+        Query database for drive info
+        return (Drive, driver_email, reserved_seats) or (None, '', 0) on error
+    '''
+    conn = connect.DBUtil().getExternalConnection()
+    curs = conn.cursor()
+    sql = '''
+SELECT f.status, f.startort, f.zielort, f.fahrtdatumzeit, f.maxPlaetze, f.fahrtkosten, f.anbieter, f.transportmittel, cast(f.beschreibung AS varchar(50)), b.email, r.reserviert
+FROM fahrt f 
+LEFT JOIN benutzer b 
+    ON b.bid=f.anbieter
+LEFT JOIN (
+    SELECT r.fahrt, SUM(r.anzPlaetze) AS reserviert
+    FROM reservieren r
+    WHERE r.fahrt=?
+    GROUP BY r.fahrt
+) r ON r.fahrt=f.fid
+WHERE f.fid=?
+'''
+    print(sql)
+    curs.execute(sql, (fid, fid))
+    res = curs.fetchall()
+    if len(res) == 0:
+        return None, '', 0
+    res = res[0]
+    print("got row ",res)
+
+    drive = Drive(
+        status 	        = res[0],
+        startort 	    = res[1],
+        zielort 	    = res[2],
+        fahrtdatumzeit  = datetime.strptime(res[3], '%Y-%m-%d %H:%M:%S'),
+        maxPlaetze 	    = res[4],
+        fahrtkosten 	= res[5],
+        anbieter 	    = res[6],
+        transportmittel = res[7],
+        beschreibung 	= res[8]
+    )
+    freeSeats = res[10] if res[10] != None else 0
+
+    conn.close()
+    return drive, res[9], freeSeats
 
 def listRatings(fid: int) -> list[tuple]:
     '''
