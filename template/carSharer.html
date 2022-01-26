@@ -12,17 +12,23 @@
 		<div id="site">
 			<h3>My Reserved Drives</h3>
 			{%for i in range(0, totalfahrt1)%}
+         <a href="/view_drive?fid={{ fid1[i] }}">
+         <div class="card-btn" style="background-color: #EFEFFF; padding: 10px">
 			<p>
 			Type : {{ fahrtType1[i] }} <br>
 			From: {{ fahrtStart1[i] }} <br>
 			To: {{ fahrtEnd1[i] }} <br>
 			Status: {{ fahrtStatus1[i] }} <br>
 			</p>
+         </div>
+         </a>
 			<br>
           	{% endfor %}
 			<br>
 			<h3>Available Drives</h3>
 			{%for i in range(0, totalfahrt)%}
+         <a href="/view_drive?fid={{ fid[i] }}">
+         <div class="card-btn" style="background-color: #EFEFFF; padding: 10px;">
 			<p>
 			Type : {{ fahrtType[i] }} <br>
 			From: {{ fahrtStart[i] }} <br>
@@ -30,6 +36,8 @@
 			Free Places: {{ freePlace[i] }} <br>
 			Cost: {{ fahrtCost[i] }} €<br>
 			</p>
+         </div>
+         </a>
 			<br>
           	{% endfor %}
 		</div>
