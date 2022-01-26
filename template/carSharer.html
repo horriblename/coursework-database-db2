@@ -12,14 +12,13 @@
 		<div id="site">
 			<h3>My Reserved Drives</h3>
 			{%for i in range(0, totalfahrt1)%}
+         {%set icon=('auto.png', 'bus.png', 'kleintransporter.png')[fahrtType1[i]-1]%}
          <a href="/view_drive?fid={{ fid1[i] }}">
-         <div class="card-btn" style="background-color: #EFEFFF; padding: 10px">
-			<p>
-			Type : {{ fahrtType1[i] }} <br>
+         <div class="card-btn" style="border: 2px solid #AEAEEF; padding: 10px; width: 45%; margin: 10px; display: inline-block; text-align: center;">
+            <img src="/static/icons/{{icon}}" alt="{{icon}}" style="max-width: 100px;"/> <br>
 			From: {{ fahrtStart1[i] }} <br>
 			To: {{ fahrtEnd1[i] }} <br>
 			Status: {{ fahrtStatus1[i] }} <br>
-			</p>
          </div>
          </a>
 			<br>
@@ -27,15 +26,14 @@
 			<br>
 			<h3>Available Drives</h3>
 			{%for i in range(0, totalfahrt)%}
+         {%set icon=('auto.png', 'bus.png', 'kleintransporter.png')[fahrtType[i]-1]%}
          <a href="/view_drive?fid={{ fid[i] }}">
-         <div class="card-btn" style="background-color: #EFEFFF; padding: 10px;">
-			<p>
-			Type : {{ fahrtType[i] }} <br>
+         <div class="card-btn" style="border: 2px solid #AEAEEF; padding: 10px; width: 45%; margin: 10px; display: inline-block; text-align: center;">
+            <img src="/static/icons/{{icon}}" alt="{{icon}}" style="max-width: 100px;"/> <br>
 			From: {{ fahrtStart[i] }} <br>
 			To: {{ fahrtEnd[i] }} <br>
 			Free Places: {{ freePlace[i] }} <br>
 			Cost: {{ fahrtCost[i] }} €<br>
-			</p>
          </div>
          </a>
 			<br>
