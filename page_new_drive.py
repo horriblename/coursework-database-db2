@@ -22,6 +22,7 @@ def newDrivePost():
             or datestr is None:
         return render_template('new_drive.html')
 
+    if len(beschreibung) > 50: beschreibung = beschreibung[:50]
     fahrtdatumzeit  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
         
     try:
