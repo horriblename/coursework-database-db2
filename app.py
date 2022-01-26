@@ -47,6 +47,10 @@ def newDrivePost():
 def viewDriveGet():
     return viewDrive.viewDriveGet()
 
+@app.route('/new_rating', methods=['GET'])
+def newRatingGet():
+    return render_template('new_rating.html')
+
 @app.route('/', methods=['GET'])
 def index():
     return carSharer()
