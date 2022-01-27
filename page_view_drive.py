@@ -8,14 +8,14 @@ def viewDriveGet():
     '''
         The flask page to be served at /view_drive
     '''
-    fid = request.args.get('fid', -1, int)
+    fid = request.args.get('fid', None, int)
     print(fid)
-    if fid == -1:
-        return render_template('error.html', errmsg='Please provide fid')
-    drive, driverEmail, takenSeats = fetchDriveInfo(fid) # type: ignore
+    if fid is None:
+        return render_template('error.html', errmsg='Please provide fid', prevPage='/')
+    drive, driverEmail, takenSeats = fetchDriveInfo(fid)
 
     if drive is None:
-        return render_template('error.html', errmsg='The drive you are looking for does not exist')
+        return render_template('error.html', errmsg='The drive you are looking for does not exist', prevPage='/')
 
     ratings = listRatings(fid)
     ratingAvg: str | float = '-'

@@ -20,10 +20,9 @@ def newDrivePost():
     if startort is None or zielort is None or \
             maxPlaetze is None or fahrtkosten is None or \
             transportmittel not in  ('Auto', 'Bus', 'Kleintransporter') \
-            or datestr is None:
-        return render_template('new_drive.html')
+            or datestr is None or len(beschreibung) > 50:
+        return render_template('error.html', errmsg='Invalid input data!', prevPage='/new_drive')
 
-    if len(beschreibung) > 50: beschreibung = beschreibung[:50]
     fahrtdatumzeit  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
         
     try:
@@ -43,7 +42,7 @@ def newDrivePost():
         ds.completion()
     except Exception as e:
         print(e)
-        return "Failed!"
+        return render_template('error.html', errmsg='DB query error!', prevPage='/new_drive')
     finally:
         ds.close() # type: ignore
 
