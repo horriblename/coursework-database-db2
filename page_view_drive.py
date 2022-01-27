@@ -34,6 +34,7 @@ def viewDriveGet():
         status=status,
         ratings=ratings,
         ratingAvg=ratingAvg,
+        fid=fid
     )
 
 def fetchDriveInfo(fid: int) -> tuple[Drive | None, str, int]:
