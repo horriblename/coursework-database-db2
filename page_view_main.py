@@ -13,7 +13,7 @@ def carSharer():
     fahrtStatus = []
     fid=[]
     curs = conn.cursor()
-    curs.execute("SELECT transportmittel, startort, zielort, maxplaetze, fahrtkosten, status, fid FROM fahrt")
+    curs.execute("SELECT transportmittel, startort, zielort, maxplaetze, fahrtkosten, status, fid FROM fahrt WHERE status='offen'")
     data = curs.fetchall()
     for row in data:
         fahrtType.append(row[0])
