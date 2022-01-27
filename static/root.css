@@ -39,7 +39,7 @@ hr{
    margin: 10px 0px;
 }
 
-link{
+a:link{
    color: FAFAFA;
    text-decoration: none;
 }
