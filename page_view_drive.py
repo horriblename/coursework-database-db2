@@ -1,5 +1,7 @@
 from flask import request, render_template
 from datetime import datetime
+import driveStore
+from user import USER_ID
 from drive import Drive
 import db_query_util
 import connect
@@ -34,8 +36,80 @@ def viewDriveGet():
         status=status,
         ratings=ratings,
         ratingAvg=ratingAvg,
-        fid=fid
+        fid=fid,
+        iscreator=drive.getDriverBID() == USER_ID
     )
+
+def newReservationPost():
+    '''
+        Handles new reservation requests
+    '''
+    fid = request.form.get('fid', None, int)
+    reservationCount = request.form.get('reservationcount', 0, int)
+    if fid is None:
+        return render_template('error.html', errmsg='Missing fid?', prevPage='/')
+
+    conn = connect.DBUtil().getExternalConnection()
+    curs = conn.cursor()
+    sql = '''
+SELECT f.status, f.maxPlaetze, f.anbieter, r.reserviert, b.alreadyReserved
+FROM fahrt f 
+LEFT JOIN (
+    SELECT r.fahrt, SUM(r.anzPlaetze) AS reserviert
+    FROM reservieren r
+    WHERE r.fahrt=?
+    GROUP BY r.fahrt
+) r ON r.fahrt=f.fid
+LEFT JOIN (
+    SELECT r.fahrt, COUNT(*) AS alreadyReserved
+    FROM reservieren r
+    WHERE r.fahrt=? AND r.kunde=?
+    GROUP BY r.fahrt
+) b ON b.fahrt=f.fid
+WHERE f.fid=?
+'''
+    print(sql)
+    curs.execute(sql, (fid, fid, USER_ID, fid))
+    res = curs.fetchall()
+    print(res)
+
+    if len(res) == 0:
+        return render_template('error.html', errmsg='The drive you are looking for does not exist', prevPage=f'/view_drive?fid={fid}')
+
+    status, maxSeats, driverBID, takenSeats, userReserved = res[0]
+
+    if status != 'offen':
+        return render_template('error.html', errmsg='The drive you are looking for is closed', prevPage=f'/view_drive?fid={fid}')
+
+    freeSeats=maxSeats - takenSeats
+    if reservationCount < 1 or reservationCount > 2 or reservationCount > freeSeats :
+        return render_template('error.html', errmsg='Invalid Reservation count', prevPage=f'/view_drive?fid={fid}')
+
+    if driverBID == USER_ID:
+        return render_template('error.html', errmsg='You may not reserve your own drive!', prevPage=f'/view_drive?fid={fid}')
+
+    if userReserved is not None:
+        return render_template('error.html', errmsg='You have already made a reservation!', prevPage=f'/view_drive?fid={fid}')
+
+    try:
+        ds = driveStore.DriveStore()
+        ds.addReservation(USER_ID, fid, reservationCount)
+        ds.completion()
+    except Exception as e:
+        print(e)
+        return render_template('error.html', errmsg='DB error!', prevPage=f'/view_drive?fid={fid}')
+    finally:
+        ds.close() # type: ignore
+
+    if reservationCount == freeSeats:
+        curs = connect.DBUtil().getExternalConnection().cursor()
+        curs.execute('SELECT status FROM fahrt WHERE fid=?', (fid,))
+        if status == 'offen':
+            return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats, but current drive status "open" is incorrect', redir=f'/view_drive?fid={fid}')
+        else:
+            return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats, drive status set to "closed"', redir=f'/view_drive?fid={fid}')
+
+    return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats.', redir=f'/view_drive?fid={fid}')
 
 def fetchDriveInfo(fid: int) -> tuple[Drive | None, str, int]:
     '''

@@ -31,6 +31,13 @@ anbieter, transportmittel, beschreibung) VALUES \
         # curs.execute(r'SELECT FID FROM fahrt WHERE ')
         #print(curs.fetchall())
 
+    def addReservation(self, user: int, fid: int, numSeats: int):
+        curs = self.conn.cursor()
+        sql = "INSERT INTO reservieren (kunde, fahrt, anzPlaetze) VALUES (?, ?, ?)"
+        curs.execute(sql, (user, fid, numSeats))
+        # curs.execute(r'SELECT FID FROM fahrt WHERE ')
+        #print(curs.fetchall())
+
     def completion(self):
         self.complete = True
 

@@ -47,6 +47,10 @@ def newDrivePost():
 def viewDriveGet():
     return viewDrive.viewDriveGet()
 
+@app.route('/new_reservation', methods=['POST'])
+def newReservationPost():
+    return viewDrive.newReservationPost()
+
 @app.route('/new_rating', methods=['GET'])
 def newRatingGet():
     return render_template('new_rating.html')
