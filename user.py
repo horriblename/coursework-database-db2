@@ -1,3 +1,5 @@
+USER_ID = 1
+
 class User:
 
     def __init__(self, firstname, lastname):

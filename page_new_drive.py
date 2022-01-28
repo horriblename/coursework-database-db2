@@ -1,6 +1,7 @@
 from flask import request, render_template
 from datetime import datetime
 from werkzeug.utils import redirect
+from user import USER_ID
 from drive import Drive
 import driveStore
 
@@ -35,7 +36,7 @@ def newDrivePost():
             transportmittel=transportmittel,
             fahrtdatumzeit=fahrtdatumzeit,
             beschreibung=beschreibung,
-            anbieter=1, # TODO
+            anbieter=USER_ID,
             status='offen'
         )
         ds.addDrive(driveToAdd)
