@@ -19,6 +19,7 @@ def carSearch():
     sql = "SELECT transportmittel, startort, zielort, fahrtkosten, fid FROM fahrt WHERE LCASE(startort) LIKE LCASE('%%%s%%') AND LCASE(zielort) LIKE LCASE('%%%s%%') AND fahrtdatumzeit >= '%s' AND status='offen' "
     curs.execute(sql % (start, destination, fromDate))
     data = curs.fetchall()
+    curs.close()
     for row in data:
         fahrtType.append(row[0])
         fahrtStart.append(row[1])
