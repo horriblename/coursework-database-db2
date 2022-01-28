@@ -42,7 +42,7 @@ def newDrivePost():
         ds.completion()
     except Exception as e:
         print(e)
-        return render_template('error.html', errmsg='DB query error!', prevPage='/new_drive')
+        return render_template('error.html', errmsg='DB error!', prevPage='/new_drive')
     finally:
         ds.close() # type: ignore
 
