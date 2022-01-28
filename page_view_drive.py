@@ -3,7 +3,6 @@ from datetime import datetime
 import driveStore
 from user import USER_ID
 from drive import Drive
-import db_query_util
 import connect
 
 def viewDriveGet():
@@ -199,16 +198,19 @@ def listRatings(fid: int) -> list[tuple]:
     '''
     # TODO add truncate symbol?
     # TODO check character limit?
-    sql = f'''
+    sql = '''
 SELECT b.email, cast(be.textnachricht AS varchar(100)), be.rating
 FROM schreiben s
     LEFT JOIN bewertung be
         ON be.beid=s.bewertung
     LEFT JOIN benutzer b
         ON b.bid=s.benutzer
-WHERE s.fahrt={fid}
+WHERE s.fahrt=?
+ORDER BY be.erstellungsdatum DESC
     '''
-    res = db_query_util.customQueryDB(sql)
-    print(res)
-    if res is None: return [] # TODO throw error?
-    return list(res)
+    curs = connect.DBUtil().getExternalConnection().cursor()
+    curs.execute(sql, (fid,))
+    res = curs.fetchall()
+    curs.close()
+
+    return res
