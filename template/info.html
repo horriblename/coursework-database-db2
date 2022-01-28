@@ -1,0 +1,26 @@
+<!--
+param msg: The error message to display
+param redir: page to redirect to
+-->
+<html>
+<head><title>CarSharer</title>
+   <link rel="stylesheet"  href="static/root.css" />
+</head>
+
+<body>
+	<div id="wrapper">
+      <a href="/">
+         <div id="header">
+         <h1> CarSharer </h1>
+         </div>
+      </a>
+
+		<div id="site">
+         <div class="info" style="color: deepskyblue;background-color: lightblue; border-left: 4px solid blue; padding: 20px;">
+            <h4>{{msg}}</h4>
+         </div>
+         <a href="{{redir}}" class="btn">Continue</a>
+		</div>
+	</div>
+</body>
+</html>
