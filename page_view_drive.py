@@ -104,6 +104,11 @@ WHERE f.fid=?
     if reservationCount == freeSeats:
         curs = connect.DBUtil().getExternalConnection().cursor()
         curs.execute('SELECT status FROM fahrt WHERE fid=?', (fid,))
+        status = curs.fetchall()
+        if len(status) == 0:
+            return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats, but could not find drive info', redir=f'/view_drive?fid={fid}')
+        status = status[0][0]
+
         if status == 'offen':
             return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats, but current drive status "open" is incorrect', redir=f'/view_drive?fid={fid}')
         else:
