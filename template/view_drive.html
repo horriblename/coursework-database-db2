@@ -58,14 +58,19 @@
 
          <hr>
          <h3> Reservation</h3>
-         <form action="new_reservation" method="post">
+         <form action="/new_reservation" method="post">
             <!-- TODO add dynamic max value: min(2, freeSeats)  -->
             Seats to reserve: <input type="number" min="1" max="2" name="reservationcount" required>
             <input type="number" name="fid" style="display: none;" value="{{fid}}">
          <button type="submit">Place Reservations</button>
-
-         <!--delete drive: what does this do??-->
          </form>
+
+         {% if iscreator %}
+         <form action="/delete_drive" method="post">
+            <input type="number" name="fid" style="display: none;" value="{{fid}}">
+            <button type="submit">Delete this Drive</button>
+         </form>
+         {% endif %}
 
          <hr>
          <div>

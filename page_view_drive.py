@@ -117,6 +117,36 @@ WHERE f.fid=?
 
     return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats.', redir=f'/view_drive?fid={fid}')
 
+def deleteDrivePost():
+    fid = request.form.get("fid", None, int)
+    if fid is None:
+        return render_template('error.html', errmsg='Missing fid When Deleting drive!', prevPage='/')
+
+    curs = connect.DBUtil().getExternalConnection().cursor()
+    curs.execute('SELECT anbieter from fahrt WHERE fid=?', (fid,))
+    driver = curs.fetchall()
+    curs.close()
+
+    if len(driver) == 0:
+        return render_template('error.html', errmsg='Drive not found in DB!', prevPage='/')
+    
+    driver = driver[0][0]
+
+    if driver != USER_ID:
+        return render_template('error.html', errmsg="You may not delete other user's drive!", prevPage=f'/view_drive?fid={fid}')
+
+    try:
+        ds = driveStore.DriveStore()
+        ds.deleteDrive(USER_ID, fid)
+        ds.completion()
+    except Exception as e:
+        print(e)
+        return render_template('error.html', errmsg='DB error!', prevPage=f'/view_drive?fid={fid}')
+    finally:
+        ds.close() # type: ignore
+
+    return render_template('info.html', msg=f'Drive successfully deleted.', redir='/')
+
 def fetchDriveInfo(fid: int) -> tuple[Drive | None, str, int]:
     '''
         Query database for drive info

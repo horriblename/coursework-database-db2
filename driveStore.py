@@ -35,8 +35,10 @@ anbieter, transportmittel, beschreibung) VALUES \
         curs = self.conn.cursor()
         sql = "INSERT INTO reservieren (kunde, fahrt, anzPlaetze) VALUES (?, ?, ?)"
         curs.execute(sql, (user, fid, numSeats))
-        # curs.execute(r'SELECT FID FROM fahrt WHERE ')
-        #print(curs.fetchall())
+
+    def deleteDrive(self, user:int, fid: int):
+        curs = self.conn.cursor()
+        curs.execute('DELETE FROM fahrt WHERE fid=? AND anbieter=?', (fid, user))
 
     def completion(self):
         self.complete = True
