@@ -77,6 +77,7 @@ WHERE f.fid=?
         return render_template('error.html', errmsg='The drive you are looking for does not exist', prevPage=f'/view_drive?fid={fid}')
 
     status, maxSeats, driverBID, takenSeats, userReserved = res[0]
+    if takenSeats is None: takenSeats = 0
 
     if status != 'offen':
         return render_template('error.html', errmsg='The drive you are looking for is closed', prevPage=f'/view_drive?fid={fid}')
