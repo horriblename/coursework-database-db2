@@ -30,6 +30,7 @@ def viewDriveGet():
 
     return render_template('view_drive.html', 
         drive=drive, 
+        icon=('auto.png', 'bus.png', 'kleintransporter.png')[drive.getVehicleTypeId()-1],
         driverEmail=driverEmail,
         freeSeats=drive.getMaxCap() - takenSeats,
         status=status,

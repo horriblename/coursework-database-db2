@@ -1,5 +1,6 @@
 <!--
    param drive: Drive object
+   param icon: icon file name
    param driverEmail: query from db
    param freeSeats: calculate
    param status: 'open' or 'closed'
@@ -44,6 +45,8 @@
 
 		<div id="site">
          <h2>Information</h2>
+         <div style="text-align: center;">
+            <img src="/static/icons/{{ icon }}" />
          <table class="table-subtle"> <tbody>
                <tr><td>Offered by: </td><td>{{driverEmail}}</td></tr>
                <tr><td>Departure date and time: </td><td>{{drive.getDriveDateTimeStr()}}</td></tr>
@@ -54,6 +57,7 @@
                <tr><td>Status: </td><td>{{status}}</td></tr>
                <tr><td>Description: </td><td>{{drive.getDescription()}}</td></tr>
          </tbody></table>
+         </div>
 
          <hr>
          <h3> Reservation</h3>
@@ -67,7 +71,7 @@
          {% if iscreator %}
          <form action="/delete_drive" method="post">
             <input type="number" name="fid" style="display: none;" value="{{fid}}">
-            <button type="submit">Delete this Drive</button>
+            <button type="submit" style="color: white; background-color: red; padding: 5px; border-color: none;">Delete this Drive</button>
          </form>
          {% endif %}
 
