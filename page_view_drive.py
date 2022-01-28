@@ -183,7 +183,7 @@ WHERE f.fid=?
         maxPlaetze 	    = res[4],
         fahrtkosten 	= res[5],
         anbieter 	    = res[6],
-        transportmittel = res[7],
+        transportmittel = ('Auto', 'Bus', 'Kleintransporter')[res[7]-1],
         beschreibung 	= res[8]
     )
     freeSeats = res[10] if res[10] != None else 0
