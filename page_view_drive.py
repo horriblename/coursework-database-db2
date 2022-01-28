@@ -105,6 +105,7 @@ WHERE f.fid=?
         curs = connect.DBUtil().getExternalConnection().cursor()
         curs.execute('SELECT status FROM fahrt WHERE fid=?', (fid,))
         status = curs.fetchall()
+        curs.close()
         if len(status) == 0:
             return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats, but could not find drive info', redir=f'/view_drive?fid={fid}')
         status = status[0][0]
