@@ -40,17 +40,19 @@ hr{
 }
 
 a:link{
-   color: FAFAFA;
+   color: black;
    text-decoration: none;
 }
 
-.btn {
+.btn:link {
    background-color: #2c5b9c;
-   padding: 4px 8px;
-   margin: 4px 4px;
+   padding: 6px 8px;
+   margin: 6px 6px;
    color: white;
+}
 
-   text-decoration: none;
+.btn:visited {
+   color: white;
 }
 
 .table-subtle {
