@@ -1,5 +1,6 @@
 from flask import render_template
 import connect
+from user import USER_ID
 
 def carSharer():
 
@@ -31,7 +32,7 @@ def carSharer():
     fahrtStatus1 = []
     fid1 = []
     curs1 = conn.cursor()
-    curs1.execute("SELECT transportmittel, startort, zielort, status, fid FROM fahrt f, reservieren r WHERE r.kunde = 1 AND f.fid = r.fahrt")
+    curs1.execute("SELECT transportmittel, startort, zielort, status, fid FROM fahrt f, reservieren r WHERE r.kunde = ? AND f.fid = r.fahrt", (USER_ID,))
     data1 = curs1.fetchall()
     for row1 in data1:
         fahrtType1.append(row1[0])
