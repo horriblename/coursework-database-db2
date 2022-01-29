@@ -16,8 +16,8 @@ def carSearch():
     fahrtCost = []
     fahrtId = []
     curs = conn.cursor()
-    sql = "SELECT transportmittel, startort, zielort, fahrtkosten, fid FROM fahrt WHERE LCASE(startort) LIKE LCASE('%%%s%%') AND LCASE(zielort) LIKE LCASE('%%%s%%') AND fahrtdatumzeit >= '%s' AND status='offen' "
-    curs.execute(sql % (start, destination, fromDate))
+    sql = "SELECT transportmittel, startort, zielort, fahrtkosten, fid FROM fahrt WHERE LCASE(startort) LIKE LCASE(?) AND LCASE(zielort) LIKE LCASE(?) AND fahrtdatumzeit >= ? AND status='offen' "
+    curs.execute(sql, (f'%{start}%', f'%{destination}%', fromDate))
     data = curs.fetchall()
     curs.close()
     for row in data:
