@@ -201,8 +201,6 @@ def listRatings(fid: int) -> list[tuple]:
         param fid
         return list of tuples [(email:str, comment:str, rating:int), ...]
     '''
-    # TODO add truncate symbol?
-    # TODO check character limit?
     sql = '''
 SELECT b.email, cast(be.textnachricht AS varchar(100)), be.rating
 FROM schreiben s
