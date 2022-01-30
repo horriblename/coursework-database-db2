@@ -16,14 +16,13 @@
 			{%for i in range(0, totalfahrt1)%}
          {%set icon=('auto.png', 'bus.png', 'kleintransporter.png')[fahrtType1[i]-1]%}
          <a href="/view_drive?fid={{ fid1[i] }}">
-         <div class="card-btn" style="border: 2px solid #AEAEEF; padding: 10px; width: 45%; margin: 10px; display: inline-block; text-align: center;">
+         <div class="card-btn">
             <img src="/static/icons/{{icon}}" style="max-width: 100px;"/> <br>
 			From: {{ fahrtStart1[i] }} <br>
 			To: {{ fahrtEnd1[i] }} <br>
 			Status: {{ fahrtStatus1[i] }} <br>
          </div>
          </a>
-			<br>
           	{% endfor %}
 			<br>
 			<h3>Available Drives
@@ -32,7 +31,7 @@
 			{%for i in range(0, totalfahrt)%}
          {%set icon=('auto.png', 'bus.png', 'kleintransporter.png')[fahrtType[i]-1]%}
          <a href="/view_drive?fid={{ fid[i] }}">
-         <div class="card-btn" style="border: 2px solid #AEAEEF; padding: 10px; width: 45%; margin: 10px; display: inline-block; text-align: center;">
+         <div class="card-btn">
             <img src="/static/icons/{{icon}}" style="max-width: 100px;"/> <br>
 			From: {{ fahrtStart[i] }} <br>
 			To: {{ fahrtEnd[i] }} <br>
@@ -40,10 +39,10 @@
 			Cost: {{ fahrtCost[i] }} €<br>
          </div>
          </a>
-			<br>
           	{% endfor %}
 
-            <a href="new_drive" class="btn">New Drive</a>
+            <br>
+            <a href="new_drive" class="btn" style="width: 100%;padding: 10px; font-size: 18px;display: block;text-align: center;">New Drive</a>
 		</div>
 	</div>
 </body>

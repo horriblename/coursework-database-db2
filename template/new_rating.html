@@ -4,11 +4,14 @@
 </head>
 <body>
     <div id="wrapper">
-		<div id="header">
-		<h1> Ride Rating </h1>
-		</div>
+      <a href="/">
+         <div id="header">
+         <h1>CarSharer</h1>
+         </div>
+      </a>
 
       <div id="site">
+         <h2>New Rating</h2>
          <form name="new_rating" action="/new_rating?fid={{fid}}" method="POST">
      Comment:      
      <textarea placeholder="Enter rating here" rows="5" cols="38" name = "comment" required></textarea>
