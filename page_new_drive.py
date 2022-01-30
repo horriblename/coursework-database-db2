@@ -25,6 +25,7 @@ def newDrivePost():
 
     fahrtdatumzeit  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
         
+    fid = None
     try:
         ds = driveStore.DriveStore()
         driveToAdd = Drive(
@@ -38,7 +39,7 @@ def newDrivePost():
             anbieter=USER_ID,
             status='offen'
         )
-        ds.addDrive(driveToAdd)
+        fid = ds.addDrive(driveToAdd)
         ds.completion()
     except Exception as e:
         print(e)
@@ -46,6 +47,6 @@ def newDrivePost():
     finally:
         ds.close() # type: ignore
 
-    # TODO query FID and redirect to view_drive
-    return redirect('/')
+    if fid is None: return redirect('/')
+    return redirect(f'/view_drive?fid={fid}')
 

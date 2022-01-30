@@ -13,10 +13,10 @@ class DriveStore:
 
     def addDrive(self, driveToAdd:Drive):
         curs = self.conn.cursor()
-        sql = "INSERT INTO fahrt \
+        sql = "SELECT fid FROM FINAL TABLE (INSERT INTO fahrt \
 (status, startort, zielort, fahrtdatumzeit, maxPlaetze, fahrtkosten, \
 anbieter, transportmittel, beschreibung) VALUES \
-(?, ?, ?, ?, ?, ?, ?, ?, ?)"
+(?, ?, ?, ?, ?, ?, ?, ?, ?))"
         curs.execute(sql, (
             driveToAdd.getStatus(),
             driveToAdd.getDepart(),
@@ -28,8 +28,10 @@ anbieter, transportmittel, beschreibung) VALUES \
             driveToAdd.getVehicleTypeId(),
             driveToAdd.getDescription()
         ))
-        # curs.execute(r'SELECT FID FROM fahrt WHERE ')
-        #print(curs.fetchall())
+        ret = curs.fetchall()
+        if len(ret) > 0:
+            return ret[0][0]
+        return
 
     def addReservation(self, user: int, fid: int, numSeats: int):
         curs = self.conn.cursor()
