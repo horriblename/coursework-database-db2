@@ -13,14 +13,8 @@ FROM (
         LEFT JOIN bewertung be ON s.bewertung = be.beid
     GROUP BY f.anbieter
 ) r LEFT JOIN benutzer b ON b.bid = r.anbieter
-WHERE r.rating = (SELECT MAX(r.rating) FROM (
-    SELECT f.anbieter, AVG(CAST(be.rating AS DECIMAL(5,2))) AS rating
-    FROM schreiben s
-        LEFT JOIN fahrt f ON s.fahrt = f.fid
-        LEFT JOIN bewertung be ON s.bewertung = be.beid
-    GROUP BY f.anbieter
-) r )
-FETCH FIRST ROWS ONLY
+ORDER BY r.rating DESC
+FETCH FIRST 1 ROWS ONLY
     """
     curs.execute(sql)
     res = curs.fetchall()
