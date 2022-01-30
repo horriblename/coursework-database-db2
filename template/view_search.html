@@ -6,7 +6,7 @@
     <div id="wrapper">
       <a href="/">
          <div id="header">
-         <h1> CarSharer Website - Search</h1>
+         <h1> CarSharer Website</h1>
          </div>
       </a>
 
@@ -21,7 +21,8 @@
   <br/>
    </div>
 
-		<div id="site">
+        {% if totalfahrt > 0 %}
+		<div>
 			<h2>Search Results ({{ totalfahrt }})</h2><br/>
           {%for i in range(0, totalfahrt)%}
 			<p>
@@ -38,6 +39,9 @@
 			<br>
 
 		</div>
+        {% else %}
+        <h3> No Search Results found </h3>
+        {% endif %}
    </div>
 </body>
 </html>
