@@ -21,8 +21,8 @@ def newRatingPost():
 
     driveId = []
     curs = conn.cursor()
-    sql = "SELECT fahrt FROM schreiben WHERE benutzer=1 AND fahrt=?"
-    curs.execute(sql, (fid,))
+    sql = "SELECT fahrt FROM schreiben WHERE benutzer=? AND fahrt=?"
+    curs.execute(sql, (USER_ID,fid))
     data = curs.fetchall()
     for row in data:
         driveId.append(row[0])
