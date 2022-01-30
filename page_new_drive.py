@@ -13,13 +13,13 @@ def newDrivePost():
     zielort         = request.form.get('destination', type=str, default=None)
     maxPlaetze      = request.form.get('maxcap', type=int, default=None)
     fahrtkosten     = request.form.get('cost', type=float, default=None)
-    transportmittel = request.form.get('vehicletype', type=str, default='')
+    transportmittel = request.form.get('vehicletype', type=int, default=0)
     datestr         = request.form.get('drivedatetime', type=str, default=None) 
     beschreibung    = request.form.get('description', type=str, default='')
 
     if startort is None or zielort is None or \
             maxPlaetze is None or fahrtkosten is None or \
-            transportmittel not in  ('Auto', 'Bus', 'Kleintransporter') \
+            transportmittel < 1 or transportmittel > 3 \
             or datestr is None or len(beschreibung) > 50:
         return render_template('error.html', errmsg='Invalid input data!', prevPage='/new_drive')
 

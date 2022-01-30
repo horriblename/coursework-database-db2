@@ -5,7 +5,7 @@ class Drive:
             self,
             startort: str,
             zielort: str,
-            transportmittel: str,
+            transportmittel: int,
             maxPlaetze:int,
             fahrtkosten: float,
             fahrtdatumzeit: datetime,
@@ -15,7 +15,7 @@ class Drive:
     ):
         self.startort: str              = startort
         self.zielort: str               = zielort
-        self.transportmittel:str        = transportmittel
+        self.transportmittel:int        = transportmittel
         self.maxPlaetze: int            = maxPlaetze
         self.fahrtkosten: float         = fahrtkosten
         self.fahrtdatumzeit: datetime   = fahrtdatumzeit
@@ -35,11 +35,12 @@ class Drive:
         return self.transportmittel
 
     def getVehicleTypeId(self) -> int:
-        if self.transportmittel == 'Auto':  return 1
-        if self.transportmittel == 'Bus':   return 2
-        if self.transportmittel == 'Kleintransportmittel': return 3
-        # TODO throw error?
-        return 0
+        return self.transportmittel
+        # if self.transportmittel == 'Auto':  return 1
+        # if self.transportmittel == 'Bus':   return 2
+        # if self.transportmittel == 'Kleintransportmittel': return 3
+        # # TODO throw error?
+        # return 0
 
     def getMaxCap(self):
         return self.maxPlaetze
