@@ -4,3 +4,4 @@ __pycache__
 venv
 properties.settings
 musterloesung_block1
+hs_err_*.log
