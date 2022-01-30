@@ -1,0 +1,38 @@
+<!-- 
+   param  email: email of 'best driver'
+   param ratingAvg: average rating
+   param availableDrives: list of drives in the form [(fid, transportType, from, to), ...]
+-->
+<html>
+<head><title>CarSharer</title>
+   <link rel="stylesheet"  href="static/root.css" />
+</head>
+
+<body>
+	<div id="wrapper">
+      <a href="/">
+         <div id="header">
+         <h1> CarSharer</h1>
+         </div>
+      </a>
+
+		<div id="site">
+			<h3>Available Drives of the "best Driver"</h3>
+         <p>Driver: {{email}}</p>
+         <p>Average rating: {{ratingAvg}}</p>
+			{%for row in availableDrives%}
+         {%set icon=('auto.png', 'bus.png', 'kleintransporter.png')[row[1]-1]%}
+         <a href="/view_drive?fid={{ row[0] }}">
+         <div class="card-btn">
+            <img src="/static/icons/{{icon}}" style="max-width: 100px;"/> <br>
+			Drive-ID: {{ row[0] }} <br>
+         From: {{ row[2] }}<br>
+			To: {{ row[3] }} <br>
+         </div>
+         </a>
+			<br>
+         {% endfor %}
+		</div>
+	</div>
+</body>
+</html>

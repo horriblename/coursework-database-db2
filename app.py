@@ -10,6 +10,7 @@ import page_new_drive as newDrive
 import page_view_drive as viewDrive
 import page_new_rating as newRating
 import page_view_search as viewSearch
+import page_bonus as bonus
 
 
 app = Flask(__name__, template_folder='template')
@@ -75,6 +76,10 @@ def carSharer():
 @app.route('/view_search', methods=['GET'])
 def carSearch():
     return viewSearch.carSearch()
+
+@app.route('/bonus', methods=['GET'])
+def bonusGet():
+    return bonus.bonusGet()
 
 @app.route('/addUser', methods=['GET'])
 def addUser():
