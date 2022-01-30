@@ -8,6 +8,7 @@ import re
 import page_view_main as viewMain
 import page_new_drive as newDrive
 import page_view_drive as viewDrive
+import page_new_rating as newRating
 import page_view_search as viewSearch
 
 
@@ -57,7 +58,11 @@ def deleteDrivePost():
 
 @app.route('/new_rating', methods=['GET'])
 def newRatingGet():
-    return render_template('new_rating.html')
+    return newRating.newRatingGet()
+
+@app.route('/new_rating', methods=['POST'])
+def newRatingPost():
+    return newRating.newRatingPost()
 
 @app.route('/', methods=['GET'])
 def index():

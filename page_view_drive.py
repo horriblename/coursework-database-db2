@@ -119,6 +119,9 @@ WHERE f.fid=?
     return render_template('info.html', msg=f'Successfully reserved {reservationCount} seats.', redir=f'/view_drive?fid={fid}')
 
 def deleteDrivePost():
+    '''
+        Handle delete Drive requests
+    '''
     fid = request.form.get("fid", None, int)
     if fid is None:
         return render_template('error.html', errmsg='Missing fid When Deleting drive!', prevPage='/')

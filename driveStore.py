@@ -40,6 +40,21 @@ anbieter, transportmittel, beschreibung) VALUES \
         curs = self.conn.cursor()
         curs.execute('DELETE FROM fahrt WHERE fid=? AND anbieter=?', (fid, user))
 
+    def addRating(self, userID: int, fid: int , comment: str, rating: int):
+        '''
+            Insert new rating into database
+        '''
+        curs = self.conn.cursor()
+        sql = "SELECT beid FROM FINAL TABLE (INSERT INTO bewertung (textnachricht, rating) VALUES (?, ?))"
+        curs.execute(sql, (comment, rating))
+        res = curs.fetchall()
+        print(res)
+        assert len(res) >= 0, "An error has occured while inserting into table bewertung"
+        res = res[0][0]
+
+        sql = "INSERT INTO schreiben (benutzer, fahrt, bewertung) VALUES (?, ?, ?)"
+        curs.execute(sql, (userID, fid, res))
+
     def completion(self):
         self.complete = True
 

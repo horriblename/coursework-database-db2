@@ -9,19 +9,19 @@
 		</div>
 
       <div id="site">
-  <form name="new_rating" action="" method="POST">
-     Ratingtext:     <textarea placeholder="Enter rating here" rows="5" cols="38" name = "rating" required>
-         </textarea>
+         <form name="new_rating" action="/new_rating?fid={{fid}}" method="POST">
+     Comment:      
+     <textarea placeholder="Enter rating here" rows="5" cols="38" name = "comment" required></textarea>
 
       <br>
       <br>
 
       Rating: <br>
-      <input type="radio" Name="Rating" Value ="1"> 1
-      <input type="radio" Name="Rating" Value ="2"> 2
-      <input type="radio" Name="Rating" Value ="3"> 3
-      <input type="radio" Name="Rating" Value ="4"> 4
-      <input type="radio" Name="Rating" Value ="5"> 5
+      <input type="radio" Name="rating" Value ="1"> 1
+      <input type="radio" Name="rating" Value ="2"> 2
+      <input type="radio" Name="rating" Value ="3"> 3
+      <input type="radio" Name="rating" Value ="4"> 4
+      <input type="radio" Name="rating" Value ="5"> 5
 
       <br>
       <br>
