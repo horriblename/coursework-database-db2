@@ -24,6 +24,9 @@ def newDrivePost():
         return render_template('error.html', errmsg='Invalid input data!', prevPage='/new_drive')
 
     fahrtdatumzeit  = datetime.strptime(str(datestr), '%Y-%m-%dT%H:%M')
+
+    if fahrtdatumzeit < datetime.today():
+        return render_template('error.html', errmsg='Invalid input data! Cannot create drive in the past.', prevPage='/new_drive')
         
     fid = None
     try:
