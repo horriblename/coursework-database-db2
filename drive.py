@@ -36,11 +36,6 @@ class Drive:
 
     def getVehicleTypeId(self) -> int:
         return self.transportmittel
-        # if self.transportmittel == 'Auto':  return 1
-        # if self.transportmittel == 'Bus':   return 2
-        # if self.transportmittel == 'Kleintransportmittel': return 3
-        # # TODO throw error?
-        # return 0
 
     def getMaxCap(self):
         return self.maxPlaetze

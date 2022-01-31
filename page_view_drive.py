@@ -19,7 +19,7 @@ def viewDriveGet():
         return render_template('error.html', errmsg='The drive you are looking for does not exist', prevPage='/')
 
     ratings = listRatings(fid)
-    ratingAvg: str | float = '-'
+    ratingAvg = '-'
     if len(ratings) > 0:
         ratingAvg = round(sum(r[2] for r in ratings) / len(ratings), 2)
 
@@ -150,7 +150,7 @@ def deleteDrivePost():
 
     return render_template('info.html', msg=f'Drive successfully deleted.', redir='/')
 
-def fetchDriveInfo(fid: int) -> tuple[Drive | None, str, int]:
+def fetchDriveInfo(fid: int) -> tuple:
     '''
         Query database for drive info
         return (Drive, driver_email, reserved_seats) or (None, '', 0) on error
