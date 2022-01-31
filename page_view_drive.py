@@ -68,10 +68,9 @@ LEFT JOIN (
 ) b ON b.fahrt=f.fid
 WHERE f.fid=?
 '''
-    print(sql)
     curs.execute(sql, (fid, fid, USER_ID, fid))
     res = curs.fetchall()
-    print(res)
+    print('got row ', res)
 
     if len(res) == 0:
         return render_template('error.html', errmsg='The drive you are looking for does not exist', prevPage=f'/view_drive?fid={fid}')

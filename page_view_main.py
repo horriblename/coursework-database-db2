@@ -14,7 +14,16 @@ def carSharer():
     fahrtStatus = []
     fid=[]
     curs = conn.cursor()
-    curs.execute("SELECT transportmittel, startort, zielort, maxplaetze, fahrtkosten, status, fid FROM fahrt WHERE status='offen'")
+    sql = """
+SELECT f.transportmittel, f.startort, f.zielort, (f.maxplaetze - COALESCE(r.reserviert, 0)) AS freePlace, f.fahrtkosten, f.status, f.fid 
+FROM fahrt f LEFT JOIN (
+    SELECT r.fahrt, SUM(r.anzPlaetze) AS reserviert
+    FROM reservieren r
+    GROUP BY r.fahrt
+) r ON r.fahrt=f.fid
+WHERE f.status='offen'
+    """
+    curs.execute(sql)
     data = curs.fetchall()
     for row in data:
         fahrtType.append(row[0])
