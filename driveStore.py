@@ -40,6 +40,10 @@ anbieter, transportmittel, beschreibung) VALUES \
 
     def deleteDrive(self, user:int, fid: int):
         curs = self.conn.cursor()
+        # workaround for cascading deletion
+        curs.execute('DELETE FROM reservieren WHERE fahrt=?', (fid,))
+        curs.execute('DELETE FROM schreiben WHERE fahrt=?', (fid,))
+
         curs.execute('DELETE FROM fahrt WHERE fid=? AND anbieter=?', (fid, user))
 
     def addRating(self, userID: int, fid: int , comment: str, rating: int):
